@@ -129,6 +129,12 @@ func isBookIDUnique(library *[]Book, id string) bool {
 }
 
 func printAllBooks(library *[]Book) {
+	err := os.MkdirAll("pdf", 0755) // Buat folder pdf jika belum ada
+	if err != nil {
+		fmt.Println("Terjadi kesalahan saat membuat direktori pdf")
+		return
+	}
+
 	pdf := gofpdf.New("P", "mm", "A4", "")
 	pdf.AddPage()
 	pdf.SetFont("Arial", "B", 16)
@@ -149,7 +155,7 @@ func printAllBooks(library *[]Book) {
 		pdf.Ln(12)
 	}
 
-	err := pdf.OutputFileAndClose("pdf/all_books.pdf")
+	err = pdf.OutputFileAndClose("pdf/all_books.pdf")
 	if err != nil {
 		fmt.Println("Terjadi kesalahan saat menyimpan file PDF")
 		return
@@ -159,6 +165,12 @@ func printAllBooks(library *[]Book) {
 }
 
 func printBookByID(library *[]Book, id string) {
+	err := os.MkdirAll("pdf", 0755) // Buat folder pdf jika belum ada
+	if err != nil {
+		fmt.Println("Terjadi kesalahan saat membuat direktori pdf")
+		return
+	}
+
 	var bookToPrint *Book
 	for i, book := range *library {
 		if book.ID == id {
@@ -188,7 +200,7 @@ func printBookByID(library *[]Book, id string) {
 	pdf.Ln(8)
 	pdf.Cell(0, 10, "Tahun Terbit: "+strconv.Itoa(bookToPrint.Year))
 
-	err := pdf.OutputFileAndClose(fmt.Sprintf("pdf/book_%s.pdf", id))
+	err = pdf.OutputFileAndClose(fmt.Sprintf("pdf/book_%s.pdf", id))
 	if err != nil {
 		fmt.Println("Terjadi kesalahan saat menyimpan file PDF")
 		return
